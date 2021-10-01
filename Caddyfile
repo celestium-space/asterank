@@ -1,0 +1,11 @@
+
+:80 {
+  @notStatic {
+    path_regexp \/asterank(?!\/static)
+  }
+
+  # root /static/* ./asterank/
+  # root /asterank/static/* ./
+  reverse_proxy notStatic localhost:9990
+  file_server
+}

@@ -10,7 +10,7 @@ from pymongo import MongoClient
 import calc.horizon as horizon
 from calc.jpl_lookup import Asteroid as JPL_Asteroid
 
-conn = MongoClient(os.environ["MONGODB_CONNECTION_STRING"])
+conn = MongoClient(os.getenv("MONGODB_CONNECTION_STRING", "mongodb://localhost"))
 db = conn.asterank
 asteroids = db.asteroids
 mpc_coll = db.mpc
