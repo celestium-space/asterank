@@ -75,7 +75,7 @@
 	<!-- info on screen display -->
   <div id="loading">
     <!--<img src="/images/loader.gif"/> Loading <span id="loading-text"></span>...-->
-    <img src="/static/img/loader.gif"/> Loading asteroids from database...
+    <img src="/asterank/static/img/loader.gif"/> Loading asteroids from database...
   </div>
   <div id="not-supported" style="display:none;">
     <p>
@@ -110,7 +110,7 @@
   <!--
   <script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r58/three.min.js"></script>
   -->
-  {% assets filter="jsmin", output="gen/packed_full3d.js",
+  {% assets filters="jsmin", output="gen/packed_full3d.js",
   "js/3d/lib/three.js/three.min.js",
   "js/3d/lib/three.js/Detector.js",
   "js/3d/lib/three.js/TrackballControls.js",

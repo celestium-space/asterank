@@ -1,7 +1,6 @@
-import md5
+import hashlib
+
 
 def md5_storage_hash(s):
-  m = md5.new()
-  m.update(s)
-  return m.hexdigest()
-
+    m = hashlib.md5.new(s)
+    return m.hexdigest()
