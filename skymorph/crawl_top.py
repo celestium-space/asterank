@@ -6,7 +6,7 @@
 #
 # TODO this only crawls objects with prov_des set in JPL SBDB
 
-import skymorph
+from . import skymorph
 import pymongo
 from pymongo import Connection
 
@@ -24,7 +24,7 @@ def process(asteroid):
       target = asteroid['full_name']
       if target.strip() == '':
         return
-  print 'crawl', target
+  print('crawl', target)
   skymorph.images_for(target)
 
 

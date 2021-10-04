@@ -10,7 +10,7 @@ from jpl_lookup import Asteroid
 import pymongo
 from pymongo import MongoClient
 
-NUM_CRAWL = 1000
+NUM_CRAWL = 5
 connection = MongoClient(os.getenv("MONGODB_CONNECTION_STRING", 'mongodb://localhost'))
 db = connection.asterank
 
@@ -25,7 +25,7 @@ def process(asteroid):
   if idx == 0:
     desig = desig[1:-1]
 
-  print('q:', desig)
+  print(('q:', desig))
   a = Asteroid(desig)
   a.load()
   a.data['tag_name'] = desig

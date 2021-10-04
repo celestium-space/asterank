@@ -1,1 +1,1 @@
-../data/pipeline/run/10_sbdb/estimate.py
+data/pipeline/run/10_sbdb/estimate.py

@@ -21,7 +21,7 @@ else:
   DV_TEST_PATH = sys.argv[2]
   OUTPUT_PATH = sys.argv[3]
 
-print('Reading', DATA_PATH, '...')
+print(('Reading', DATA_PATH, '...'))
 df = pp.read_csv(DATA_PATH, index_col='pdes')
 
 df.i = df.i * np.pi / 180      # inclination in radians
@@ -75,7 +75,7 @@ df['F'] = df.ul + df.ur
 df['dv'] = (30*df.F) + .5
 
 # Import Benner's delta v calculations.
-print('Reading', DV_TEST_PATH, '...')
+print(('Reading', DV_TEST_PATH, '...'))
 df_test = pp.read_csv(DV_TEST_PATH, index_col='pdes')
 
 results = df.join(df_test, how='inner', rsuffix='_benner')
@@ -106,7 +106,7 @@ print('\n\n30 asteroids with lowest delta-v:')
 for pdes, row in df[:30].iterrows():
   print(('%s \t%.3f km/s' % (pdes, row['dv'])))
 
-print('\nWriting results to', OUTPUT_PATH)
+print(('\nWriting results to', OUTPUT_PATH))
 #df.to_csv(OUTPUT_PATH, cols=('dv',))
 f = open(OUTPUT_PATH, 'w')
 f.write('pdes,dv\n')

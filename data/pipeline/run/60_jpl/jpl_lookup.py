@@ -45,8 +45,8 @@ class Asteroid:
 class JPL_Query:
     def __init__(self, query):
         src = urllib.request.urlopen(
-            'http://ssd.jpl.nasa.gov/sbdb.cgi?sstr=%s;cad=1' % query).read()
-        self.soup = BeautifulSoup(src.replace('cellspacing="0"0', ''))
+            'http://ssd.jpl.nasa.gov/sbdb.cgi?sstr=%s;cad=1' % urllib.parse.quote(query)).read()
+        self.soup = BeautifulSoup(src.decode().replace('cellspacing="0"0', ''))
 
     def orbitalParameter(self, txt):
         tag = self.soup.find(text=txt)

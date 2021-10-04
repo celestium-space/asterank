@@ -47,7 +47,7 @@ def closeness_weight(obj):
         obj['moid'], str) else obj['moid']
 
     # penalize aphelion distance
-    aph = float(obj['ad'])
+    aph = float(obj['ad'] or '0')
     if aph > 50:
         return -1
     aph_score = 1/(1+math.exp(0.9*aph))

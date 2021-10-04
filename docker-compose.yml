@@ -3,6 +3,7 @@ services:
     build: .
     environment:
       MONGODB_CONNECTION_STRING: "mongodb://mongo"
+      REDIS_HOST: "redis"
     ports:
       - 80:80
     depends_on:
@@ -11,3 +12,10 @@ services:
   mongo:
     image: mongo:latest
     command: --quiet --logpath /dev/null
+    expose:
+      - 27017
+
+  redis:
+    image: redis:latest
+    expose:
+      - 6379

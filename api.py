@@ -65,7 +65,7 @@ def rankings(sort_by, limit, orbits_only=False):
         if obj['spec'] == 'comet':
             # omit comets from rankings
             continue
-        appendme = {key: val for key, val in obj.items() if val != ''}
+        appendme = {key: val for key, val in list(obj.items()) if val != ''}
         # Some sanitation for a python json serialization bug where very
         # small numbers are serialized to -Infinity, breaking client JSON parsing.
         for field in fields:
@@ -207,7 +207,7 @@ def exoplanets(query, limit):
             'ma': 0,   # mean anomaly
             'epoch': 2451545.0,  # j2000
         }
-        for key, val in REQ_TO_DB_MAP.items():
+        for key, val in list(REQ_TO_DB_MAP.items()):
             appendme[key] = result[val]
         # real period, not transit period
         #appendme['a'] *= 20
@@ -215,7 +215,7 @@ def exoplanets(query, limit):
         appendme['P'] = math.sqrt(appendme['a'] ** 3) * 365.25
         if appendme['i'] != '':
             appendme['i'] -= 90
-        for key, default in RESP_DEFAULTS.items():
+        for key, default in list(RESP_DEFAULTS.items()):
             if key not in appendme or appendme[key] == '' or appendme[key] == 0:
                 appendme[key] = default
         final.append(appendme)

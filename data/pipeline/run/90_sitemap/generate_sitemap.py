@@ -92,4 +92,4 @@ for asteroid in jpl.find():
 
     url_tags.append(URL_TAG_TEMPLATE % (url, priority))
 
-print(SITEMAP % (''.join(url_tags)))
+print((SITEMAP % (''.join(url_tags))))

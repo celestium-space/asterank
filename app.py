@@ -3,7 +3,7 @@
 from flask import Flask, request, redirect, session, url_for, render_template, Response, jsonify, make_response, send_from_directory
 from flask_assets import Environment, Bundle
 from flask_mail import Mail
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import json
 import random
 import base64

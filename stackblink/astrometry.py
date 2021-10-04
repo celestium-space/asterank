@@ -2,7 +2,7 @@ import subprocess, datetime, os, time, signal
 import tempfile
 import time
 import shutil
-from StringIO import StringIO
+from io import StringIO
 from shove import Shove
 
 from astLib import astWCS
@@ -32,20 +32,20 @@ def process(png_data, estimated_ra, estimated_dec, key, key_prefix=''):
 
   png_path = f.name
 
-  print 'Solving field for', key, '...'
+  print('Solving field for', key, '...')
   result = _timeout_command('solve-field --no-plots --cpulimit 30 -o solution --scale-units degwidth --scale-low 0 --scale-high 2 %s --ra %f --dec %f --radius 1 -D %s' \
       % (png_path, estimated_ra, estimated_dec, output_dir), 60)
 
   if not result:
-    print '\033[91m Could not solve field\033[0m'
+    print('\033[91m Could not solve field\033[0m')
     return None
-  print 'Done solving field'
+  print('Done solving field')
 
   wcs_path = output_dir + '/solution.new'
   try:
     f_wcs = open(wcs_path, 'r')
   except:
-    print "\033[91m No solution\033[0m"
+    print("\033[91m No solution\033[0m")
     return None
   wcs_text = f_wcs.read()
   f_wcs.close()
@@ -62,7 +62,7 @@ def process(png_data, estimated_ra, estimated_dec, key, key_prefix=''):
 def get_center_ra_dec(key):
   shovekey = 'neat_wcs_%s' % md5_storage_hash(key)
   if shovekey not in store:
-    print "get_center_ra_dec: couldn't find matching key in store"
+    print("get_center_ra_dec: couldn't find matching key in store")
     return None
   wcs = astWCS.WCS(StringIO(store[shovekey]))
   return wcs.getCentreWCSCoords()
@@ -78,7 +78,7 @@ def get_pixel_offset(image_key1, image_key2, reference_ra, reference_dec):
   shove_key2 = 'neat_wcs_%s' % md5_storage_hash(image_key2)
 
   if shove_key1 not in store or shove_key2 not in store:
-    print "get_pixel_offset: couldn't find matching keys in store - are you sure they've been processed?"
+    print("get_pixel_offset: couldn't find matching keys in store - are you sure they've been processed?")
     return None
 
   wcs1 = astWCS.WCS(StringIO(store[shove_key1]))

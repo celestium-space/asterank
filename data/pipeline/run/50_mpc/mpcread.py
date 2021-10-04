@@ -33,14 +33,14 @@ for object in open(FILE, 'r'):
   if not firstlineseen:
     continue
   if c % 5000 == 0:
-    print(c, '...')
+    print((c, '...'))
   c += 1
   if object.strip() == '':
     continue
   item = {}
   item['des'] = object[0:7].strip()          # in packed form
   if item['des'] in seen:
-    print('Duplicate des', item['des'])
+    print(('Duplicate des', item['des']))
     continue
   seen.add(item['des'])
   try:
@@ -88,9 +88,9 @@ for object in open(FILE, 'r'):
 
   if len(items) > 50000:
     # insert into mongo
-    print('Inserting/updating %d items into MPC collection' % (len(items)))
+    print(('Inserting/updating %d items into MPC collection' % (len(items))))
     coll.insert(items, continue_on_error=True)
     items = []
-print('Inserting/updating %d items into MPC collection' % (len(items)))
+print(('Inserting/updating %d items into MPC collection' % (len(items))))
 coll.insert(items, continue_on_error=True)
 items = []

@@ -63,6 +63,6 @@ if __name__ == "__main__":
     f = open(TARGET, 'r')
     data = f.read()
     f.close()
-    print(process(data))
+    print((process(data)))
   else:
-    print(process_from_internet())
+    print((process_from_internet()))

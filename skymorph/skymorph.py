@@ -1,6 +1,7 @@
 import math
+import os
 import re
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import requests
 import json
 import skymorph.neat_binary
@@ -43,7 +44,7 @@ IMAGE_PARSING_REGEX = re.compile("img src='(.*?)'")
 
 # Redis Config
 REDIS_PREFIX = 'skymorph'
-redis = StrictRedis(host='localhost', port=6379, db=3)
+redis = StrictRedis(host=os.getenv("REDIS_HOST", "localhost"), port=int(os.getenv("REDIS_PORT", "6379")), db=3)
 
 # Disk cache config
 store = Shove('file:///var/asterank/skymorph_store',
@@ -129,7 +130,7 @@ def parse_results_table(text, neat_fields):
         newentries = [col.findAll(text=True) for col in row]
         # value for follow-up query
         newentries.append([[col.find('input') for col in row][0]['value']])
-        newentries = [x[0].strip().replace(u'\xa0', u' ').replace(u'\xc2', u' ')
+        newentries = [x[0].strip().replace('\xa0', ' ').replace('\xc2', ' ')
                       for x in newentries if len(x) == 1 and x[0].strip() != '']
         new_entry = {neat_fields[i]: newentries[i]
                      for i in range(len(neat_fields))}
