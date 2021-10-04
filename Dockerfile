@@ -29,6 +29,7 @@ COPY static/ ./static/
 COPY templates/ ./templates/
 COPY upstart/ ./upstart/
 COPY util.py ./
+COPY ./.git ./.git
 COPY ./Caddyfile ./
 COPY ./entrypoint.sh ./
 

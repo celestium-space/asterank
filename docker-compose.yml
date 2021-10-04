@@ -1,0 +1,13 @@
+services:
+  asterank:
+    build: .
+    environment:
+      MONGODB_CONNECTION_STRING: "mongodb://mongo"
+    ports:
+      - 80:80
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:latest
+    command: --quiet --logpath /dev/null

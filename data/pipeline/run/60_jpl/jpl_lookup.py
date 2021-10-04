@@ -4,7 +4,7 @@
 #
 
 import sys
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import re
 import json
 import time
@@ -44,7 +44,7 @@ class Asteroid:
 
 class JPL_Query:
     def __init__(self, query):
-        src = urllib.urlopen(
+        src = urllib.request.urlopen(
             'http://ssd.jpl.nasa.gov/sbdb.cgi?sstr=%s;cad=1' % query).read()
         self.soup = BeautifulSoup(src.replace('cellspacing="0"0', ''))
 
@@ -52,7 +52,7 @@ class JPL_Query:
         tag = self.soup.find(text=txt)
         if tag:
             el = tag.find_parent(
-                'td').next_sibling.next_sibling.find('font').next
+                'td').next_sibling.next_sibling.find('font').__next__
             return float(el)
         return -1
 
@@ -60,7 +60,7 @@ class JPL_Query:
         tag = self.soup.find(text=txt)
         if tag:
             el = tag.find_parent(
-                'td').next_sibling.next_sibling.next_sibling.next_sibling.find('font').next
+                'td').next_sibling.next_sibling.next_sibling.next_sibling.find('font').__next__
             try:
                 return float(el)
             except ValueError:
@@ -86,7 +86,7 @@ class JPL_Query:
         results = []
         soonest = None
         while tag:
-            texts = map(lambda x: x.get_text(), tag.find_all('font'))
+            texts = [x.get_text() for x in tag.find_all('font')]
             d = {}
             pydate = datetime.strptime(texts[0], '%Y-%b-%d %H:%M')
             if pydate >= datetime.today() and texts[2] == 'Earth':
@@ -128,4 +128,4 @@ if __name__ == "__main__":
         sys.exit(1)
     a = Asteroid(' '.join(sys.argv[1:]))
     a.load()
-    print(json.dumps(a.data))
+    print((json.dumps(a.data)))

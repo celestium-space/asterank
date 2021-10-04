@@ -2,9 +2,14 @@
 # Scoring function for asteroid objects
 #
 # from bigfloat import *   # TODO use this
+
+# do this to put `calc` module from repo root in syspath
+import sys
+sys.path.append('../../../../')
+
 import math
 import random
-import calc.estimate
+import calc.estimate as estimate
 
 DEFAULT_RADIUS = .5  # km
 DEFAULT_MASS = 1.47e15  # kg
@@ -39,22 +44,22 @@ def closeness_weight(obj):
         return -1
 
     emoid = DEFAULT_MOID if isinstance(
-        obj['moid'], basestring) else obj['moid']
+        obj['moid'], str) else obj['moid']
 
     # penalize aphelion distance
-    aph = obj['ad']
+    aph = float(obj['ad'])
     if aph > 50:
         return -1
     aph_score = 1/(1+math.exp(0.9*aph))
 
-    major_axis = obj['a']
+    major_axis = float(obj['a'])
     ma_score = 1/(1+math.exp(0.45*major_axis))
 
-    ph = obj['q']
+    ph = float(obj['q'])
     ph_score = 1/(1+math.exp(0.9*ph))
 
     if 'dv' in obj:
-        dv = obj['dv']
+        dv = float(obj['dv'])
     else:
         if obj['spec'] == 'comet':
             dv = DEFAULT_COMET_DV
@@ -77,14 +82,14 @@ def price(obj):
         return (-1, -1)
 
     # estimate albedo
-    if isinstance(obj['albedo'], basestring):
+    if isinstance(obj['albedo'], str):
         albedo = DEFAULT_ALBEDO
     else:
         albedo = float(obj['albedo'])
 
     # estimate diameter
-    if isinstance(obj['diameter'], basestring):
-        if isinstance(obj['H'], basestring):
+    if isinstance(obj['diameter'], str):
+        if isinstance(obj['H'], str):
             # Can't estimate diameter :(
             diameter = DEFAULT_RADIUS * 2
         else:
@@ -97,7 +102,7 @@ def price(obj):
 
     # mass in kg
     exactmass = False
-    if isinstance(obj['GM'], basestring):
+    if isinstance(obj['GM'], str):
         diameter = obj['est_diameter'] if 'est_diameter' in obj else obj['diameter']
         if diameter:
             # Use diameter to estimate mass --> estimate price

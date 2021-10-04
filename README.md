@@ -6,6 +6,29 @@ The main purpose of Asterank is to make space-related data readily accessible to
 
 Asterank has been featured by BBC News, Popular Science, and other media.
 
+## Artificial Mind Fork
+
+This repo is Artificial Mind's fork of asterranks.
+
+The goal is to be able to embed the front page in [celestium-frontend](https://gitlab.com/artificialmind/mind-future/celestium/celestium-frontend/-/tree/dev)
+
+A couple of things have happened to make this possible: 
+
+- port from python2 -> python3
+- put in docker
+- populate db automatically on startup
+- prefix all URLs with `/asteranks/`
+- replace some dead URLs
+- remove exoplanet data
+
+To run this project locally, just `docker-compose up`
+
+Docker containers are also built and pushed to registry from CI/CD.
+
+
+**The rest of this README is from the original project** 
+
+
 ## The basics
 
 Asterank is configured to run with virtualenv.  Virtual environment setup:

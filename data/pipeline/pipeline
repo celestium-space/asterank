@@ -1,4 +1,5 @@
-#!/bin/bash -e
+#!/usr/bin/env bash
+set -e
 
 if [ $# -gt 0 ]; then
   filter=$1

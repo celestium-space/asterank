@@ -6,14 +6,16 @@
 
 import csv
 import re
-import StringIO
+import io
 import sys
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 
-BENNER_URL = 'http://echo.jpl.nasa.gov/~lance/delta_v/delta_v.rendezvous.html'
+# this URL disappeared between 2021-02-02 and 2021-04-12
+# BENNER_URL = 'http://echo.jpl.nasa.gov/~lance/delta_v/delta_v.rendezvous.html'
+BENNER_URL = 'http://web.archive.org/web/20210202035814/https://echo.jpl.nasa.gov/~lance/delta_v/delta_v.rendezvous.html'
 
 def process_from_internet():
-  data = urllib2.urlopen(BENNER_URL).read()
+  data = urllib.request.urlopen(BENNER_URL).read()
   return process(data)
 
 def process(text):
@@ -30,7 +32,7 @@ def process(text):
       '\s+(?P<e>\d+\.\d+)'
       '\s+(?P<i>\d+\.\d+)'))
   c = 0
-  buf = StringIO.StringIO()
+  buf = io.StringIO()
   fields = ('pdes', 'dv', 'H', 'a', 'e', 'i')
   writer = csv.DictWriter(buf, fields)
   writer.writeheader()
@@ -39,7 +41,7 @@ def process(text):
     if c < 4:
       continue
 
-    m = r.match(line)
+    m = r.match(line.decode('utf8'))
     if not m:
       continue
 
@@ -61,6 +63,6 @@ if __name__ == "__main__":
     f = open(TARGET, 'r')
     data = f.read()
     f.close()
-    print process(data)
+    print(process(data))
   else:
-    print process_from_internet()
+    print(process_from_internet())
