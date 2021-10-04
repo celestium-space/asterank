@@ -10070,7 +10070,7 @@ function AsteroidDetailsCtrl($scope, $http, pubsub) {
     var cache_result = jpl_cache.Get(query);
     if (cache_result) ShowData(cache_result);
     else
-      $http.get("/jpl/lookup?query=" + query).success(function (data) {
+      $http.get("/asterank/jpl/lookup?query=" + query).success(function (data) {
         ShowData(data);
         jpl_cache.Set($scope.asteroid.full_name, data);
       });
