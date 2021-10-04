@@ -1,10 +1,10 @@
 :80/static/* {
-  root /static/* ./asterank/
+  root ./asterank/
   file_server
 }
 
 :80/asterank/static/* {
-  root /asterank/static/* ./
+  root ./
   file_server
 }
 
