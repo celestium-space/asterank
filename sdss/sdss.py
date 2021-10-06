@@ -38,11 +38,11 @@ for root, subFolders, files in os.walk(DATA_PATH):
             data_index.setdefault(f, [])
 
 # Prune bad entries
-for key in data_index.keys():
+for key in list(data_index.keys()):
     if len(data_index[key]) < 2:
         del data_index[key]
 
-data_index_keys = data_index.keys()
+data_index_keys = list(data_index.keys())
 data_index_size = len(data_index_keys)
 
 print(f'SDSS data index size: {data_index_size} images')

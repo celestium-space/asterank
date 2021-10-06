@@ -2,5 +2,7 @@ import hashlib
 
 
 def md5_storage_hash(s):
-    m = hashlib.md5.new(s)
+    if isinstance(s, str):
+        s = s.encode("utf8")
+    m = hashlib.md5(s)
     return m.hexdigest()

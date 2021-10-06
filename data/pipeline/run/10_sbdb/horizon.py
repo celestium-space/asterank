@@ -3,14 +3,17 @@
 # Loads NASA JPL Horizons data into db
 #
 
+# do this to put `calc` module from repo root in syspath
 import sys
+sys.path.append('../../../../')
+import os
 import argparse
 import csv
 import re
 import json
 import telnetlib
-import calc.scoring
-import calc.estimate
+import calc.scoring as scoring
+import calc.estimate as estimate
 from pymongo import MongoClient
 
 G = 6.67300e-20   # km^3 / kgs^2
@@ -48,7 +51,7 @@ def _run(partial=False):
     # Constants and settings
 
     # Fill database
-    conn = MongoClient('localhost', 27017)
+    conn = MongoClient(os.getenv("MONGODB_CONNECTION_STRING", "mongodb://localhost"))
     db = conn.asterank
     coll = db.asteroids
     print('Dropping asteroids (SBDB) collection...')
@@ -78,7 +81,7 @@ def _run(partial=False):
             massd[name] = []
         massd[name].append(mass)
 
-    for name, masses in massd.iteritems():
+    for name, masses in list(massd.items()):
         avg = sum(masses) / len(masses)
         massd[name] = avg
     del massd['']
@@ -92,7 +95,8 @@ def _run(partial=False):
 
     print('Loading small body data...this may take a while')
     print(DATA_PATH)
-    reader = csv.DictReader(open(DATA_PATH), delimiter=',', quotechar='"')
+    reader = list(csv.DictReader(open(DATA_PATH), delimiter=',', quotechar='"'))
+    print(f"got reader: {len(list(reader))}")
     designation_regex = re.compile('.*\(([^\)]*)\)')
     n = 0
     items = []
@@ -143,7 +147,7 @@ def _run(partial=False):
             row['prov_des'] = ''
 
         # Clean up inputs
-        for key, val in row.items():
+        for key, val in list(row.items()):
             if val is None:
                 val = ''
             try:
@@ -181,25 +185,25 @@ def _run(partial=False):
         n += 1
         if len(items) > 20000:
             # insert into mongo
-            print(
-                'Row #', n, '... inserting/updating %d items into asteroids (SBDB) collection' % (len(items)))
+            print((
+                'Row #', n, '... inserting/updating %d items into asteroids (SBDB) collection' % (len(items))))
             coll.insert(items, continue_on_error=True)
             items = []
     # insert into mongo
-    print('Row #', n, '... inserting/updating %d items into asteroids (SBDB) collection' % (len(items)))
+    print(('Row #', n, '... inserting/updating %d items into asteroids (SBDB) collection' % (len(items))))
     coll.insert(items, continue_on_error=True)
     items = []
 
-    print('Loaded', n, 'asteroids')
+    print(('Loaded', n, 'asteroids'))
 
 
 def compositions():
-    print(json.dumps(estimate.SPECTRA_INDEX))
+    print((json.dumps(estimate.SPECTRA_INDEX)))
     return estimate.SPECTRA_INDEX
 
 
 def materials():
-    print(json.dumps(estimate.MATERIALS_INDEX))
+    print((json.dumps(estimate.MATERIALS_INDEX)))
     return estimate.MATERIALS_INDEX
 
 
@@ -226,4 +230,4 @@ if __name__ == "__main__":
     if fnname in l:
         l[fnname]()
     else:
-        print('No such operation "%s"' % fnname)
+        print(('No such operation "%s"' % fnname))

@@ -1,0 +1,13 @@
+:80/static/* {
+  root ./asterank/
+  file_server
+}
+
+:80/asterank/static/* {
+  root ./
+  file_server
+}
+
+:80 {
+  reverse_proxy localhost:9990
+}

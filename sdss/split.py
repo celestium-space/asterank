@@ -7,6 +7,7 @@ import os
 import operator
 import math
 from PIL import Image, ImageEnhance
+from functools import reduce
 
 FRAME_SIZE = 512
 OVERLAP_RATIO = .11
@@ -14,9 +15,9 @@ OVERLAP_RATIO = .11
 path = os.path.abspath(sys.argv[1])
 newpath_prefix, ext = os.path.splitext(path)
 
-print 'Splitting %s...' % path
+print('Splitting %s...' % path)
 if path.find('-thumb-') > -1:
-  print 'Skipping thumb'
+  print('Skipping thumb')
   sys.exit(1)
 
 #def enhance(img):
@@ -40,7 +41,7 @@ def equalize(im):
 
 im = Image.open(path)
 if im.size[0] < 500 or im.size[1] < 500:
-  print 'Too small.'
+  print('Too small.')
   sys.exit(1)
 im.load()
 

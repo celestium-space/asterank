@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
+import os
 import pymongo
-from pymongo import Connection
+from pymongo import MongoClient
 
 SITEMAP = """<?xml version="1.0" encoding="UTF-8"?>
 <urlset
@@ -62,7 +63,7 @@ URL_TAG_TEMPLATE = """
 
 URL_TEMPLATE = 'https://cryptocanvas.space/asterank/asteroid-%s'
 
-connection = Connection('localhost', 27017)
+connection = MongoClient(os.getenv("MONGODB_CONNECTION_STRING", "mongodb://localhost"))
 jpl = connection.asterank.jpl
 asteroids = connection.asterank.asteroids
 
@@ -91,4 +92,4 @@ for asteroid in jpl.find():
 
     url_tags.append(URL_TAG_TEMPLATE % (url, priority))
 
-print SITEMAP % (''.join(url_tags))
+print((SITEMAP % (''.join(url_tags))))

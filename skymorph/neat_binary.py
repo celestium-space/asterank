@@ -3,7 +3,7 @@
 import png
 import os
 import sys
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import io
 from threading import Thread, Lock
 from shove import Shove
@@ -35,9 +35,9 @@ def process_from_internet(id, x0, y0, width, height):
         formatted_query = QUERY_FORMAT % (id, x0, y0, width, height)
         url = '%s%s%s' % (BASE_URL, ENDPOINT, formatted_query)
         try:
-            req = urllib.urlopen(url)  # TODO 1998 XB errored out here
+            req = urllib.request.urlopen(url)  # TODO 1998 XB errored out here
         except urllib.HTTPError:
-            print(url, 'errored out')
+            print((url, 'errored out'))
             return None
 
         buffer = io.BytesIO(req.read())

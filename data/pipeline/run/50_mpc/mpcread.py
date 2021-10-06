@@ -1,13 +1,14 @@
 #!/usr/bin/env python
 
 import sys
+import os
 from pymongo import MongoClient
 
 if len(sys.argv) < 1:
-  print 'usage: mpcread mpcorb.dat'
+  print('usage: mpcread mpcorb.dat')
   sys.exit(1)
 
-print 'Processing...'
+print('Processing...')
 
 FILE = sys.argv[1]
 
@@ -16,7 +17,7 @@ lines = f.readlines()
 f.close()
 
 # set up mongo connection
-conn = MongoClient()
+conn = MongoClient(os.getenv("MONGODB_CONNECTION_STRING", "mongodb://localhost"))
 db = conn.asterank
 coll = db.mpc
 coll.drop()
@@ -32,14 +33,14 @@ for object in open(FILE, 'r'):
   if not firstlineseen:
     continue
   if c % 5000 == 0:
-    print c, '...'
+    print((c, '...'))
   c += 1
   if object.strip() == '':
     continue
   item = {}
   item['des'] = object[0:7].strip()          # in packed form
   if item['des'] in seen:
-    print 'Duplicate des', item['des']
+    print(('Duplicate des', item['des']))
     continue
   seen.add(item['des'])
   try:
@@ -87,9 +88,9 @@ for object in open(FILE, 'r'):
 
   if len(items) > 50000:
     # insert into mongo
-    print 'Inserting/updating %d items into MPC collection' % (len(items))
+    print(('Inserting/updating %d items into MPC collection' % (len(items))))
     coll.insert(items, continue_on_error=True)
     items = []
-print 'Inserting/updating %d items into MPC collection' % (len(items))
+print(('Inserting/updating %d items into MPC collection' % (len(items))))
 coll.insert(items, continue_on_error=True)
 items = []

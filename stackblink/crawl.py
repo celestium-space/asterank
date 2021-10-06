@@ -3,7 +3,7 @@ import sys
 import os
 import random
 import pymongo
-import astrometry
+from . import astrometry
 from pymongo import Connection
 from datetime import datetime
 from threading import Thread
@@ -29,7 +29,7 @@ def create_known_groups():
         target = asteroid['full_name']
         if target.strip() == '':
           return
-    print 'crawl', target
+    print('crawl', target)
 
     #skymorph.images_for(prov_des)
 
@@ -70,7 +70,7 @@ def create_known_groups():
           'center_ra': center_ra,
           'center_dec': center_dec,
           }
-        print 'Fetching img %d of %d (group %d/%d)' % (rcount, len(group), gcount, len(groups))
+        print('Fetching img %d of %d (group %d/%d)' % (rcount, len(group), gcount, len(groups)))
         png_data = skymorph.get_fast_image(result['key'])
         if not png_data or type(png_data) == dict or \
             not astrometry.process(png_data, center_ra, center_dec, \
@@ -90,12 +90,12 @@ def create_known_groups():
           offset = astrometry.get_pixel_offset(result['key'], group_results[0]['key'], \
               ref_ra, ref_dec)
           if not offset:
-            print '\033[91m!! ERROR: skipping image for', target, \
-                'because it has not had its astrometry processed.\033[0m', result['key']
+            print('\033[91m!! ERROR: skipping image for', target, \
+                'because it has not had its astrometry processed.\033[0m', result['key'])
             continue
           result['offset_x'] = offset[0]
           result['offset_y'] = offset[1]
-          print 'Offsets:', offset
+          print('Offsets:', offset)
         groups_final_datastructure.append({
           'score': 0,
           'interesting': 0,
@@ -112,21 +112,21 @@ def create_known_groups():
 
   c = 0
   for asteroid in asteroids.find().sort('score', pymongo.DESCENDING).limit(NUM_CRAWL):
-    print 'score #', c
+    print('score #', c)
     c += 1
     new_image_groups = process(asteroid)
     if new_image_groups:
       stackblink.insert(new_image_groups)
   c = 0
   for asteroid in asteroids.find().sort('closeness', pymongo.DESCENDING).limit(NUM_CRAWL):
-    print 'closeness #', c
+    print('closeness #', c)
     c += 1
     new_image_groups = process(asteroid)
     if new_image_groups:
       stackblink.insert(new_image_groups)
   c = 0
   for asteroid in asteroids.find().sort('price', pymongo.DESCENDING).limit(NUM_CRAWL):
-    print 'price #', c
+    print('price #', c)
     c += 1
     new_image_groups = process(asteroid)
     if new_image_groups:

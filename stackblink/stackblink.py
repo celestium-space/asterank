@@ -15,7 +15,7 @@ asteroids = db.asteroids
 stackblink = db.stackblink
 stackblink_results = db.stackblink_results
 
-redis = StrictRedis(host='localhost', port=6379, db=3)
+redis = StrictRedis(host=os.getenv("REDIS_HOST", "localhost"), port=int(os.getenv("REDIS_PORT", "6379")), db=3)
 
 
 def get_control_groups():
@@ -23,8 +23,8 @@ def get_control_groups():
 
     # Choose a random target
     count = stackblink.count()
-    control_object = stackblink.find({}, {'_id': False}).limit(-1) \
-        .skip(random.randint(0, count-1)).next()
+    control_object = next(stackblink.find({}, {'_id': False}).limit(-1) \
+        .skip(random.randint(0, count-1)))
     # TODO  handle no groups
     return control_object
 
