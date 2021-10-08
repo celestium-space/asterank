@@ -10,7 +10,7 @@
     run_asteroid_query: true,
     show_dat_gui: !isMobileOrTablet(),
     static_prefix: window.passthrough_vars.offline_mode
-      ? "static"
+      ? "asterank/static"
       : "/asterank/static",
   });
 
