@@ -16,4 +16,4 @@ nohup.out
 local_config.py
 data/pipeline/out
 
-mongo_data
+mongo_data*
