@@ -8,7 +8,7 @@ stages:
 
 variables:
   # image with have name "$project:$branch" like "captain:master"
-  IMAGE_NAME: registry.gitlab.com/artificialmind/mind-future/celestium/asterank:$CI_COMMIT_REF_SLUG
+  IMAGE_NAME: registry.gitlab.com/artificialmind/celestium/asterank:$CI_COMMIT_REF_SLUG
 
 before_script:
   - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
